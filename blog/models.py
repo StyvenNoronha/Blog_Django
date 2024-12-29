@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.urls import reverse
 # Create your models here.
 
 
@@ -80,6 +80,12 @@ class Post(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, default=None)   
     tags = models.ManyToManyField(Tag, blank=True, default="")    
 
+    def get_absolute_url(self):
+        if not self.is_published:
+           return reverse('blog:index')
+        return reverse ('blog:post', args=(self.slug,))
+         
+    
 
     def __str__(self):
         return self.title
