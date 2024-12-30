@@ -41,9 +41,15 @@ class Category(models.Model):
 class Page(models.Model):
     title = models.CharField(max_length=65)
     slug = models.SlugField(unique=True, default=None, null=True, blank=True, max_length=100)   
-
     is_published = models.BooleanField(default=False)
     content = models.TextField()  
+
+    def get_absolute_url(self):
+        if not self.is_published:
+           return reverse('blog:index')
+        return reverse ('blog:page', args=(self.slug,))
+
+
 
 
 
